@@ -1,77 +1,54 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Digital Gourmand</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .tab-active { border-bottom: 4px solid #f59e0b; color: #f59e0b; }
-        .card-enter { animation: fadeInUp 0.5s ease forwards; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body class="bg-orange-50 font-sans pb-10">
-
-    <header class="bg-white shadow-sm p-6 text-center mb-6">
-        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 text-uppercase">Chargement...</h1>
-        <p class="text-orange-600 text-sm italic">Fait avec amour, mangé avec passion</p>
-    </header>
-
-    <div class="flex justify-center space-x-8 mb-8 sticky top-0 bg-orange-50 py-4 z-10 shadow-sm">
-        <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 tab-active">🍩 Sucrées</button>
-        <button onclick="filterMenu('sale')" id="btn-sale" class="text-lg font-bold px-4 py-2 text-gray-400">🥨 Salées</button>
-    </div>
-
-    <main id="menu-container" class="px-4 grid grid-cols-1 gap-6 max-w-md mx-auto">
-        </main>
-
-    <script>
-        let allProducts = [];
-
-        // 1. Aller chercher les données dans le fichier JSON
-        fetch('menu.json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('shop-name').innerText = data.boutique;
-                allProducts = data.produits;
-                filterMenu('sucre'); // Afficher le sucré par défaut
-            });
-
-        // 2. Fonction pour filtrer et afficher
-        function filterMenu(cat) {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = ''; // On vide
-
-            // Gérer l'apparence des boutons
-            document.getElementById('btn-sucre').classList.toggle('tab-active', cat === 'sucre');
-            document.getElementById('btn-sucre').classList.toggle('text-gray-400', cat !== 'sucre');
-            document.getElementById('btn-sale').classList.toggle('tab-active', cat === 'sale');
-            document.getElementById('btn-sale').classList.toggle('text-gray-400', cat !== 'sale');
-
-            // Filtrer les produits
-            const filtered = allProducts.filter(p => p.categorie === cat);
-
-            // Créer les cartes
-            filtered.forEach(p => {
-                const card = `
-                    <div class="bg-white rounded-2xl shadow-md overflow-hidden flex items-center p-4 card-enter">
-                        <img src="${p.image}" class="w-20 h-20 object-cover rounded-xl bg-orange-100">
-                        <div class="ml-4 flex-1">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-gray-800">${p.nom}</h3>
-                                <span class="text-orange-600 font-bold">${p.prix}</span>
-                            </div>
-                            <p class="text-gray-500 text-xs mt-1 leading-tight">${p.description}</p>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
-    </script>
-</body>
-</html>
+{
+  "boutique": "Ti Clet & BB",
+  "produits": [
+    {
+      "nom": "La Nutella",
+      "prix": "4.50€",
+      "categorie": "sucre",
+      "description": "L'incontournable au Nutella fondant. Toppings dispo : Chantilly / Amandes.",
+      "image": "https://images.unsplash.com/photo-1584947844009-3286f77977a4?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "Chocolat Maison",
+      "prix": "5.00€",
+      "categorie": "sucre",
+      "description": "Un vrai chocolat onctueux préparé par nos soins. Toppings dispo : Chantilly / Amandes.",
+      "image": "https://images.unsplash.com/photo-1541923371-807953533507?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "Caramel Maison",
+      "prix": "5.00€",
+      "categorie": "sucre",
+      "description": "Caramel au beurre salé fait maison. Toppings dispo : Chantilly / Amandes.",
+      "image": "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "Confiture Tomate",
+      "prix": "4.00€",
+      "categorie": "sucre",
+      "description": "L'originalité sucrée de notre confiture de tomate artisanale.",
+      "image": "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "Confiture Tangor",
+      "prix": "4.00€",
+      "categorie": "sucre",
+      "description": "La saveur acidulée et parfumée du tangor pays.",
+      "image": "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "L'Aubergine",
+      "prix": "7.00€",
+      "categorie": "sale",
+      "description": "Gaufre salée savoureuse à base d'aubergines cuisinées.",
+      "image": "https://images.unsplash.com/photo-1518133835878-5a93cc3f89e5?q=80&w=200&auto=format&fit=crop"
+    },
+    {
+      "nom": "Poulet Fumé & Poivrons",
+      "prix": "8.50€",
+      "categorie": "sale",
+      "description": "✨ NOUVEAUTÉ ✨ Gaufre fourrée au poulet fumé et duo de poivrons croquants.",
+      "image": "https://images.unsplash.com/photo-1626700051175-656a42ebd451?q=80&w=200&auto=format&fit=crop"
+    }
+  ]
+}
