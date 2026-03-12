@@ -17,12 +17,12 @@
 <body class="bg-orange-50 font-sans pb-10">
 
     <header class="bg-white shadow-sm p-6 text-center mb-6">
-        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 uppercase tracking-wide">Chargement...</h1>
+        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 uppercase tracking-wide text-center">Chargement...</h1>
         <p class="text-orange-600 text-sm italic">Fait avec amour, mangé avec passion</p>
     </header>
 
     <div class="flex justify-center space-x-8 mb-8 sticky top-0 bg-orange-50/90 backdrop-blur-sm py-4 z-10 shadow-sm">
-        <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 tab-active transition-all">🍩 Sucrées</button>
+        <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 transition-all">🍩 Sucrées</button>
         <button onclick="filterMenu('sale')" id="btn-sale" class="text-lg font-bold px-4 py-2 text-gray-400 transition-all">🥨 Salées</button>
     </div>
 
@@ -30,7 +30,7 @@
         </main>
 
     <section id="section-extras" class="max-w-md mx-auto mt-12 px-4 hidden">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-orange-500 pl-3">Les Petits Plus</h2>
+        <h2 id="title-extras" class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-orange-500 pl-3">Les Petits Plus</h2>
         <div id="extras-container" class="bg-white rounded-2xl p-4 shadow-sm divide-y divide-gray-100">
             </div>
     </section>
@@ -39,25 +39,32 @@
         let allProducts = [];
         let allExtras = [];
 
+        // CHARGEMENT DES DONNÉES
         fetch('menu.json?v=' + Date.now())
             .then(response => response.json())
             .then(data => {
                 document.getElementById('shop-name').innerText = data.boutique;
                 allProducts = data.produits;
                 allExtras = data.extras;
-                filterMenu('sucre'); // On lance par défaut sur le sucré
+                
+                // On lance le premier affichage (Sucre)
+                filterMenu('sucre');
             });
 
         function filterMenu(cat) {
-            // 1. Filtrer les produits
             const container = document.getElementById('menu-container');
-            container.innerHTML = '';
-            
+            const extrasContainer = document.getElementById('extras-container');
+            const sectionExtras = document.getElementById('section-extras');
+            const titleExtras = document.getElementById('title-extras');
+
+            // 1. Mise à jour visuelle des boutons
             document.getElementById('btn-sucre').classList.toggle('tab-active', cat === 'sucre');
             document.getElementById('btn-sucre').classList.toggle('text-gray-400', cat !== 'sucre');
             document.getElementById('btn-sale').classList.toggle('tab-active', cat === 'sale');
             document.getElementById('btn-sale').classList.toggle('text-gray-400', cat !== 'sale');
 
+            // 2. Affichage des produits
+            container.innerHTML = '';
             const filteredProd = allProducts.filter(p => p.categorie === cat);
             filteredProd.forEach(p => {
                 container.innerHTML += `
@@ -73,15 +80,15 @@
                     </div>`;
             });
 
-            // 2. Filtrer les extras
-            const extrasContainer = document.getElementById('extras-container');
-            const sectionExtras = document.getElementById('section-extras');
+            // 3. Affichage des extras filtrés
             extrasContainer.innerHTML = '';
-            
-            const filteredExtras = allExtras.filter(ex => ex.categorie === cat);
+            const filteredExtras = allExtras.filter(ex => ex.categorie === cat || ex.categorie === 'tous');
 
             if (filteredExtras.length > 0) {
                 sectionExtras.classList.remove('hidden');
+                // On adapte le titre selon la catégorie
+                titleExtras.innerText = (cat === 'sucre') ? "Toppings Sucrés" : "Suppléments Salés";
+                
                 filteredExtras.forEach(ex => {
                     extrasContainer.innerHTML += `
                         <div class="flex justify-between py-2 items-center">
@@ -90,7 +97,7 @@
                         </div>`;
                 });
             } else {
-                sectionExtras.classList.add('hidden'); // On cache la section s'il n'y a pas d'extras pour cette catégorie
+                sectionExtras.classList.add('hidden');
             }
         }
     </script>
