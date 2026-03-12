@@ -51,10 +51,10 @@
       "image": "https://images.unsplash.com/photo-1626700051175-656a42ebd451?q=80&w=200&auto=format&fit=crop"
     }
   ],
-  "extras": [
+"extras": [
     { "nom": "Chantilly Maison", "prix": "+0.50€", "categorie": "sucre" },
     { "nom": "Amandes effilées", "prix": "+0.50€", "categorie": "sucre" },
-    { "nom": "Boule de glace vanille", "prix": "+1.50€", "categorie": "sucre" },
-    { "nom": "Supplément Fromage", "prix": "+1.00€", "categorie": "sale" }
-  ]
+    { "nom": "Supplément Fromage", "prix": "+1.00€", "categorie": "sale" },
+    { "nom": "Sauce Pimentée", "prix": "Offert", "categorie": "sale" }
+]
 }
