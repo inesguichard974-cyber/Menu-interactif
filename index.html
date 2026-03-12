@@ -3,51 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Digital - Ti Clet & BB</title>
+    <title id="page-title">Menu Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .tab-active { border-bottom: 4px solid #f59e0b; color: #f59e0b; }
+        /* Variables CSS que le JS va modifier */
+        :root { --main-color: #f59e0b; --bg-color: #fff7ed; }
+        .tab-active { border-bottom: 4px solid var(--main-color); color: var(--main-color); }
+        .text-primary { color: var(--main-color); }
+        .bg-primary { background-color: var(--main-color); }
         .card-enter { animation: fadeInUp 0.4s ease forwards; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-orange-50 font-sans pb-10">
+<body id="body-bg" class="font-sans pb-10">
 
     <header class="bg-white shadow-sm p-6 text-center mb-6">
-        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 uppercase tracking-wide text-center">Chargement...</h1>
-        <p class="text-orange-600 text-sm italic">Fait avec amour, mangé avec passion</p>
+        <img id="shop-logo" src="" alt="Logo" class="w-20 h-20 mx-auto mb-3 rounded-full hidden">
+        <h1 id="shop-name" class="text-2xl font-bold text-gray-800 uppercase tracking-wide">Chargement...</h1>
+        <p class="text-gray-500 text-sm italic">Fait avec amour, mangé avec passion</p>
     </header>
 
-    <div class="flex justify-center space-x-8 mb-8 sticky top-0 bg-orange-50/90 backdrop-blur-sm py-4 z-10 shadow-sm">
+    <div id="nav-sticky" class="flex justify-center space-x-8 mb-8 sticky top-0 py-4 z-10 shadow-sm backdrop-blur-sm">
         <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 transition-all">🍩 Sucrées</button>
         <button onclick="filterMenu('sale')" id="btn-sale" class="text-lg font-bold px-4 py-2 text-gray-400 transition-all">🥨 Salées</button>
     </div>
 
-    <main id="menu-container" class="px-4 grid grid-cols-1 gap-6 max-w-md mx-auto">
-        </main>
+    <main id="menu-container" class="px-4 grid grid-cols-1 gap-6 max-w-md mx-auto"></main>
 
     <section id="section-extras" class="max-w-md mx-auto mt-12 px-4 hidden">
         <h2 id="title-extras" class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-orange-500 pl-3">Les Petits Plus</h2>
-        <div id="extras-container" class="bg-white rounded-2xl p-4 shadow-sm divide-y divide-gray-100">
-            </div>
+        <div id="extras-container" class="bg-white rounded-2xl p-4 shadow-sm divide-y divide-gray-100"></div>
     </section>
+
+    <footer class="mt-12 text-center">
+        <a id="insta-link" href="#" target="_blank" class="hidden inline-flex items-center text-gray-600 hover:text-pink-600 transition-colors">
+            <span class="font-bold">Suivez-nous sur Instagram</span>
+        </a>
+    </footer>
 
     <script>
         let allProducts = [];
         let allExtras = [];
 
-        // CHARGEMENT DES DONNÉES
         fetch('menu.json?v=' + Date.now())
             .then(response => response.json())
             .then(data => {
-                document.getElementById('shop-name').innerText = data.boutique;
+                const cfg = data.config;
+                
+                // 1. APPLIQUER LA PERSONNALISATION
+                document.title = "Menu - " + cfg.nom_boutique;
+                document.getElementById('shop-name').innerText = cfg.nom_boutique;
+                document.getElementById('body-bg').style.backgroundColor = cfg.couleur_fond;
+                document.getElementById('nav-sticky').style.backgroundColor = cfg.couleur_fond + "CC";
+                document.documentElement.style.setProperty('--main-color', cfg.couleur_primaire);
+                
+                // Logo
+                if(cfg.logo_url) {
+                    const logo = document.getElementById('shop-logo');
+                    logo.src = cfg.logo_url;
+                    logo.classList.remove('hidden');
+                }
+
+                // Instagram
+                if(cfg.instagram_username) {
+                    const insta = document.getElementById('insta-link');
+                    insta.href = "https://instagram.com/" + cfg.instagram_username;
+                    insta.classList.remove('hidden');
+                }
+
                 allProducts = data.produits;
                 allExtras = data.extras;
-                
-                // On lance le premier affichage (Sucre)
                 filterMenu('sucre');
             });
 
@@ -55,45 +80,36 @@
             const container = document.getElementById('menu-container');
             const extrasContainer = document.getElementById('extras-container');
             const sectionExtras = document.getElementById('section-extras');
-            const titleExtras = document.getElementById('title-extras');
 
-            // 1. Mise à jour visuelle des boutons
             document.getElementById('btn-sucre').classList.toggle('tab-active', cat === 'sucre');
             document.getElementById('btn-sucre').classList.toggle('text-gray-400', cat !== 'sucre');
             document.getElementById('btn-sale').classList.toggle('tab-active', cat === 'sale');
             document.getElementById('btn-sale').classList.toggle('text-gray-400', cat !== 'sale');
 
-            // 2. Affichage des produits
             container.innerHTML = '';
-            const filteredProd = allProducts.filter(p => p.categorie === cat);
-            filteredProd.forEach(p => {
+            allProducts.filter(p => p.categorie === cat).forEach(p => {
                 container.innerHTML += `
                     <div class="bg-white rounded-2xl shadow-md overflow-hidden flex items-center p-4 card-enter">
-                        <img src="${p.image}" class="w-20 h-20 object-cover rounded-xl bg-orange-100">
+                        <img src="${p.image}" class="w-20 h-20 object-cover rounded-xl bg-gray-100">
                         <div class="ml-4 flex-1">
                             <div class="flex justify-between items-start">
                                 <h3 class="font-bold text-gray-800 leading-tight">${p.nom}</h3>
-                                <span class="text-orange-600 font-bold ml-2">${p.prix}</span>
+                                <span class="text-primary font-bold ml-2">${p.prix}</span>
                             </div>
                             <p class="text-gray-500 text-xs mt-1 leading-tight">${p.description}</p>
                         </div>
                     </div>`;
             });
 
-            // 3. Affichage des extras filtrés
             extrasContainer.innerHTML = '';
-            const filteredExtras = allExtras.filter(ex => ex.categorie === cat || ex.categorie === 'tous');
-
+            const filteredExtras = allExtras.filter(ex => ex.categorie === cat);
             if (filteredExtras.length > 0) {
                 sectionExtras.classList.remove('hidden');
-                // On adapte le titre selon la catégorie
-                titleExtras.innerText = (cat === 'sucre') ? "Toppings Sucrés" : "Suppléments Salés";
-                
                 filteredExtras.forEach(ex => {
                     extrasContainer.innerHTML += `
                         <div class="flex justify-between py-2 items-center">
                             <span class="text-gray-700 font-medium">${ex.nom}</span>
-                            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold">${ex.prix}</span>
+                            <span class="bg-orange-100 text-primary px-3 py-1 rounded-full text-xs font-bold">${ex.prix}</span>
                         </div>`;
                 });
             } else {
