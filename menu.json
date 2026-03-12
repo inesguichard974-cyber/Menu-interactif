@@ -52,8 +52,9 @@
     }
   ],
   "extras": [
-    { "nom": "Chantilly Maison", "prix": "+0.50€" },
-    { "nom": "Amandes effilées", "prix": "+0.50€" },
-    { "nom": "Vermicelles Arc-en-Ciel", "prix": "+0.50€" }
+    { "nom": "Chantilly Maison", "prix": "+0.50€", "categorie": "sucre" },
+    { "nom": "Amandes effilées", "prix": "+0.50€", "categorie": "sucre" },
+    { "nom": "Boule de glace vanille", "prix": "+1.50€", "categorie": "sucre" },
+    { "nom": "Supplément Fromage", "prix": "+1.00€", "categorie": "sale" }
   ]
 }
