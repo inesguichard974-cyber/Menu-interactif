@@ -33,7 +33,7 @@
         let allProducts = [];
 
         // 1. Aller chercher les données dans le fichier JSON
-        fetch('menu.json')
+        fetch('menu.json?v=' + Date.now())
             .then(response => response.json())
             .then(data => {
                 document.getElementById('shop-name').innerText = data.boutique;
