@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Digital Gourmand</title>
+    <title>Menu Digital - Ti Clet & BB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .tab-active { border-bottom: 4px solid #f59e0b; color: #f59e0b; }
@@ -17,53 +17,66 @@
 <body class="bg-orange-50 font-sans pb-10">
 
     <header class="bg-white shadow-sm p-6 text-center mb-6">
-        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 text-uppercase">Chargement...</h1>
+        <h1 id="shop-name" class="text-2xl font-bold text-orange-900 uppercase tracking-wide">Chargement...</h1>
         <p class="text-orange-600 text-sm italic">Fait avec amour, mangé avec passion</p>
     </header>
 
-    <div class="flex justify-center space-x-8 mb-8 sticky top-0 bg-orange-50 py-4 z-10 shadow-sm">
-        <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 tab-active">🍩 Sucrées</button>
-        <button onclick="filterMenu('sale')" id="btn-sale" class="text-lg font-bold px-4 py-2 text-gray-400">🥨 Salées</button>
+    <div class="flex justify-center space-x-8 mb-8 sticky top-0 bg-orange-50/90 backdrop-blur-sm py-4 z-10">
+        <button onclick="filterMenu('sucre')" id="btn-sucre" class="text-lg font-bold px-4 py-2 tab-active transition-all">🍩 Sucrées</button>
+        <button onclick="filterMenu('sale')" id="btn-sale" class="text-lg font-bold px-4 py-2 text-gray-400 transition-all">🥨 Salées</button>
     </div>
 
     <main id="menu-container" class="px-4 grid grid-cols-1 gap-6 max-w-md mx-auto">
         </main>
 
+    <section class="max-w-md mx-auto mt-12 px-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-orange-500 pl-3">Les Petits Plus (Toppings)</h2>
+        <div id="extras-container" class="bg-white rounded-2xl p-4 shadow-sm divide-y divide-gray-100">
+            </div>
+    </section>
+
     <script>
         let allProducts = [];
 
-        // 1. Aller chercher les données dans le fichier JSON
         fetch('menu.json?v=' + Date.now())
             .then(response => response.json())
             .then(data => {
                 document.getElementById('shop-name').innerText = data.boutique;
                 allProducts = data.produits;
-                filterMenu('sucre'); // Afficher le sucré par défaut
+                
+                // Charger les extras
+                const extrasContainer = document.getElementById('extras-container');
+                data.extras.forEach(ex => {
+                    extrasContainer.innerHTML += `
+                        <div class="flex justify-between py-2 items-center">
+                            <span class="text-gray-700 font-medium">${ex.nom}</span>
+                            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold">${ex.prix}</span>
+                        </div>
+                    `;
+                });
+
+                filterMenu('sucre');
             });
 
-        // 2. Fonction pour filtrer et afficher
         function filterMenu(cat) {
             const container = document.getElementById('menu-container');
-            container.innerHTML = ''; // On vide
+            container.innerHTML = '';
 
-            // Gérer l'apparence des boutons
             document.getElementById('btn-sucre').classList.toggle('tab-active', cat === 'sucre');
             document.getElementById('btn-sucre').classList.toggle('text-gray-400', cat !== 'sucre');
             document.getElementById('btn-sale').classList.toggle('tab-active', cat === 'sale');
             document.getElementById('btn-sale').classList.toggle('text-gray-400', cat !== 'sale');
 
-            // Filtrer les produits
             const filtered = allProducts.filter(p => p.categorie === cat);
 
-            // Créer les cartes
             filtered.forEach(p => {
                 const card = `
                     <div class="bg-white rounded-2xl shadow-md overflow-hidden flex items-center p-4 card-enter">
                         <img src="${p.image}" class="w-20 h-20 object-cover rounded-xl bg-orange-100">
                         <div class="ml-4 flex-1">
                             <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-gray-800">${p.nom}</h3>
-                                <span class="text-orange-600 font-bold">${p.prix}</span>
+                                <h3 class="font-bold text-gray-800 leading-tight">${p.nom}</h3>
+                                <span class="text-orange-600 font-bold ml-2">${p.prix}</span>
                             </div>
                             <p class="text-gray-500 text-xs mt-1 leading-tight">${p.description}</p>
                         </div>
