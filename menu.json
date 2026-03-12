@@ -1,15 +1,15 @@
 {
-  "boutique": "Les Gaufres de [Prénom]",
+  "boutique": "Ti Clet & BB",
   "produits": [
     {
       "nom": "La Classique Nutella",
       "prix": "4.50€",
       "categorie": "sucre",
-      "description": "Nutella fondant et éclats de noisettes.",
+      "description": "Nutella fondant.",
       "image": "https://via.placeholder.com/150"
     },
     {
-      "nom": "La Spéculoos",
+      "nom": "La caramel maison",
       "prix": "5.00€",
       "categorie": "sucre",
       "description": "Crème de spéculoos et brisures de biscuits.",
