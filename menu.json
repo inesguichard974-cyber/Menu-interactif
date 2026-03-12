@@ -1,5 +1,11 @@
 {
-  "boutique": "Ti Clet & BB",
+  "config": {
+    "nom_boutique": "Ti Clet & BB",
+    "logo_url": "https://via.placeholder.com/100",
+    "couleur_primaire": "#f59e0b",
+    "couleur_fond": "#fff7ed",
+    "instagram_username": "ticlet_et_bb"
+  },
   "produits": [
     {
       "nom": "La Nutella",
