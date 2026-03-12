@@ -1,0 +1,33 @@
+{
+  "boutique": "Les Gaufres de [Prénom]",
+  "produits": [
+    {
+      "nom": "La Classique Nutella",
+      "prix": "4.50€",
+      "categorie": "sucre",
+      "description": "Nutella fondant et éclats de noisettes.",
+      "image": "https://via.placeholder.com/150"
+    },
+    {
+      "nom": "La Spéculoos",
+      "prix": "5.00€",
+      "categorie": "sucre",
+      "description": "Crème de spéculoos et brisures de biscuits.",
+      "image": "https://via.placeholder.com/150"
+    },
+    {
+      "nom": "La Chèvre-Miel",
+      "prix": "6.50€",
+      "categorie": "sale",
+      "description": "Fromage de chèvre frais, miel de fleurs et noix.",
+      "image": "https://via.placeholder.com/150"
+    },
+    {
+      "nom": "La Complète",
+      "prix": "7.50€",
+      "categorie": "sale",
+      "description": "Jambon cru, fromage fondu et œuf miroir.",
+      "image": "https://via.placeholder.com/150"
+    }
+  ]
+}
